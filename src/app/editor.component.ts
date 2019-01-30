@@ -58,7 +58,6 @@ export class EditorComponent implements OnInit {
       console.log(key);
       if (this.isControlInvalid(key)) {
         flag = 1;
-        console.log('sddsds');
       }
     }
     if (flag === 0) {
@@ -66,7 +65,6 @@ export class EditorComponent implements OnInit {
       // let Stud=new Student()
       console.log(this.myform.value);
     } else {
-      console.log(9999);
     }
      flag = 0;
   }
