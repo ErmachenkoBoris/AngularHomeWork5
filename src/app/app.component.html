@@ -1,20 +1,81 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"  crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"  crossorigin="anonymous"></script>
+
+<div class="page-header" style="margin-left: 20vw"><h1 > Таблица Студетов </h1></div>
+<div class="panel" style="font-size: 2vh;">
+  <div class="form-inline">
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-8">
+        <div style="width: 1000%;">
+          <div style="float: left; width: 100px; height: 100px; margin-right: 5vw"><input type="checkbox" class="checkbox" [(ngModel)]="flag">
+            Подсветка Двоечников</div>
+          <div style="float: left; width: 200px; height: 100px; margin-right: 5vw"> Введите ФАМИЛИЮ для поиска:
+            <input size="20" type="text" class="text" [(ngModel)]="surname">
+          </div>
+          <div style="float: left; width: 200px; height: 100px;">
+            Фильтр по баллу:
+            <select #product name="marks" id="mar" (change)="changeFilter(product.options[product.selectedIndex].value)">
+              <option value="1" selected  >Больше 1</option>
+              <option value="2" >Больше 2</option>
+              <option value="3" >Больше 3</option>
+              <option value="4" >Больше 4</option>
+            </select>
+            <br>
+          </div>
+          <div style="float: left; width: 200px; height: 100px;">
+            Родились от:
+            <input type="date" name="calendar" (change)="createDate()"
+                   [(ngModel)]="mindate" min="1999-06-04" max="2012-05-29">
+          </div>
+          <div style="float: left; width: 200px; height: 100px;">
+            Родились до:
+            <input type="date" name="calendar" value="2010-06-04" (change)="createDate()"
+                   [(ngModel)]="maxdate"  min="1999-06-04" max="2012-05-29">
+          </div>
+          <div style="float: left; ">
+            <input type="button"  style="width: 200px; height: 100px; background: greenyellow" value="Добавить студента"
+            (click)="openAddDialog()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table style="margin-top: 10vh" class="table table-striped">
+    <thead>
+    <tr  >
+      <th [style.background]="backcolor[1]" >
+        Имя <p><input type="button" value="отсортировать" (click)="sortName() || changeBackColorThr(1)"></p></th>
+      <th [style.background]="backcolor[2]" >
+        Фамилия <p><input type="button" value="отсортировать" (click)="sortSerName() || changeBackColorThr(2)"></p></th>
+      <th [style.background]="backcolor[3]" >
+        Отчество <p><input type="button" value="отсортировать" (click)="sortPatronymic() || changeBackColorThr(3)"></p></th>
+      <th [style.background]="backcolor[4]" >
+        Дата Рождения <p><input type="button" value="отсортировать" (click)="sortDate() || changeBackColorThr(4)"></p></th>
+      <th [style.background]="backcolor[5]">
+        Средний балл <p><input type="button" value="отсортировать" (click)="sortMark() || changeBackColorThr(5)"></p></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let student of database" [style.background]="checkSearch(student.surname)|| checkMark(student.mark)">
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        {{student.name}}</td>
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        {{student.surname}}</td>
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        {{student.patronymic}}</td>
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        {{student.datebd.toDateString()}}</td>
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        {{student.mark}}</td>
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        <button style="background: darksalmon" mat-raised-button (click)="openDeleteStudentDialog(student)">Удалить</button>
+      </td>
+      <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
+        <button style="background: #9CD4E8" mat-raised-button (click)="openEditorDialog(student)">Редактировать</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
