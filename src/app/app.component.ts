@@ -3,18 +3,15 @@ import { FileNameDialogComponent } from './file-name-dialog.compomemt';
 import { EditorComponent } from './editor.component';
 import { AddStudentComponent } from './add-student.component';
 import {VERSION, MatDialog, MatDialogRef} from '@angular/material';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
-import { stringify } from '@angular/core/src/render3/util';
-import { variable } from '@angular/compiler/src/output/output_ast';
+import {AppHelp} from './app-help';
+
 export class Student {
   name: string;
   surname: string;
   patronymic: string;
-  datebd: any;
+  datebd: Date;
   mark: number;
-
   constructor(name: string, surname: string, patronymic: string, datebd: any, mark: number) {
-
     this.name = name;
     this.surname = surname;
     this.patronymic = patronymic;
@@ -22,23 +19,21 @@ export class Student {
     this.mark = mark;
   }
 }
-
 @Component({
   selector: 'app-purchase',
   styleUrls: ['./app.component.css'],
   templateUrl: 'app.component.html'
 })
-export class AppComponent {
-
+export class AppComponent extends AppHelp {
   database: Student[] =
     [
-      {name: 'Иван', surname: 'Соколов', patronymic: 'Борисович', datebd: new Date('7 March 2000'), mark: 5},
-      {name: 'Петр', surname: 'Петров', patronymic: 'Андреевич', datebd: new Date('21 March 2002'), mark: 4.5},
-      {name: 'Мария', surname: 'Рябова', patronymic: 'Михайловна', datebd: new Date('20 March 2001'), mark: 3},
-      {name: 'Максим', surname: 'Антонов', patronymic: 'Никитич', datebd: new Date('11 March 2003'), mark: 2.5},
-      {name: 'Никита', surname: 'Быстров', patronymic: 'Глебоич', datebd: new Date('18 March 2004'), mark: 4},
-      {name: 'Анна', surname: 'Мезина', patronymic: 'Петровна', datebd: new Date('19 March 2005'), mark: 4},
-      {name: 'Яна', surname: 'Богатова', patronymic: 'Семеновна', datebd: new Date('30 March 2000'), mark: 2}
+      {name: 'Иван', surname: 'Соколов', patronymic: 'Борисович', datebd: new Date('2000-01-03'), mark: 5},
+      {name: 'Петр', surname: 'Петров', patronymic: 'Андреевич', datebd: new Date('2002-5-3'), mark: 4.5},
+      {name: 'Мария', surname: 'Рябова', patronymic: 'Михайловна', datebd: new Date('6/3/02001'), mark: 3},
+      {name: 'Максим', surname: 'Антонов', patronymic: 'Никитич', datebd: new Date('1/29/2003'), mark: 2.5},
+      {name: 'Никита', surname: 'Быстров', patronymic: 'Глебоич', datebd: new Date('10/28/2004'), mark: 4},
+      {name: 'Анна', surname: 'Мезина', patronymic: 'Петровна', datebd: new Date('5/5/2005'), mark: 4},
+      {name: 'Яна', surname: 'Богатова', patronymic: 'Семеновна', datebd: new Date('12/10/2000'), mark: 2}
     ];
   backcolor: string[] = ['white', 'white', 'white', 'white', 'white'];
   flag: boolean;
@@ -50,13 +45,10 @@ export class AppComponent {
   mindb: any = new Date('1999-05-29');
   on = 0;
   delete = 0;
-  version = VERSION;
-
   fileNameDialogRef: any;
   fileNameDialogEd: any;
   fileNameDialogAd: any;
-
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) {super(); }
   changeStudent(St: Student, St2: Student) {
     for (let i = 0; i < this.database.length; i++) {
       if (St === this.database[i]) {
@@ -65,36 +57,32 @@ export class AppComponent {
         this.database[i].patronymic = St2.patronymic;
         this.database[i].datebd = St2.datebd;
         this.database[i].mark = St2.mark;
-        console.log(this.database[i].mark);
-        console.log(St2);
-        console.log(this.database.length);
       }
     }
   }
-
-  deleteStudent(St: Student): void {
+  deleteStudent(St: Student): number {
     for (let i = 0; i < this.database.length; i++) {
       if (St === this.database[i]) {
         this.database.splice(i, 1);
-        console.log(this.database.length);
+        return 1;
       }
     }
-    console.log(this.database.length);
+    return 0;
   }
-  addStudent(St: Student): void {
+  addStudent(St: Student): number {
     this.database[this.database.length] = new Student(St.name, St.surname, St.patronymic, St.datebd, St.mark);
-    console.log(this.database.length);
+    return 1;
   }
-  openDeleteStudentDialog(St: Student): void {
+  openDeleteStudentDialog(St: Student): number {
     this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {data: {name: St.surname}});
     this.fileNameDialogRef.afterClosed().subscribe(result => {
       this.delete = result;
-      console.log(this.delete);
       if (this.delete) {
         this.deleteStudent(St);
+        return 1;
       }
     });
-
+    return 0;
   }
   openEditorDialog(St: Student): void {
     this.fileNameDialogEd = this.dialog.open(EditorComponent, {
@@ -116,7 +104,7 @@ export class AppComponent {
   checkMark(mark: number): string {
     if (mark < 3 && this.flag === true) {
       return '#FA5C34';
-    }
+    } else {return ''; }
   }
 
   checkSearch(surmame: string): string {
@@ -124,12 +112,9 @@ export class AppComponent {
       return '#9CD4E8';
     }
   }
-
   changeFilter(val: string): void {
     this.filter = val;
-    console.log(1);
   }
-
   createDate(): void {
     if (this.maxdate) {
       this.maxdb = new Date(this.maxdate);
@@ -142,11 +127,9 @@ export class AppComponent {
       this.mindb = new Date('1999-05-29');
     }
   }
-
-  checkConditionsFilters(mark: number, datebd: Date): boolean {
-    return mark > (this.filter || '1') && datebd > this.mindb && datebd < this.maxdb;
+  checkConditionsFilters(mark: number, datebd1: Date): boolean {
+    return mark > (this.filter || '1') && datebd1 > this.mindb && datebd1 < this.maxdb;
   }
-
   sortMark(): void {
     const length: number = this.database.length;
     let maxj: number;
@@ -246,17 +229,17 @@ export class AppComponent {
       }
     }
   }
-
   changeBackColorThr(index: number): void {
     for (let i = 0; i < this.backcolor.length; i++) {
       this.backcolor[i] = 'white';
     }
     this.backcolor[index] = '#98FB98';
   }
-
-
   turnOn(value: number): void {
     this.on = value;
+  }
+  openEditor() {
+    this.HideEdit = 1;
   }
 
 }

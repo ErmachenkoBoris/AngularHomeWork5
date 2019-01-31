@@ -1,7 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"  crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"  crossorigin="anonymous"></script>
-
 <div class="page-header" style="margin-left: 20vw"><h1 > Таблица Студетов </h1></div>
 <div class="panel" style="font-size: 2vh;">
   <div class="form-inline">
@@ -65,17 +64,18 @@
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         {{student.patronymic}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        {{student.datebd.toDateString()}}</td>
+        {{(student.datebd.getMonth()+1) + '/' + student.datebd.getDate() + '/' +  student.datebd.getFullYear()}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         {{student.mark}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         <button style="background: darksalmon" mat-raised-button (click)="openDeleteStudentDialog(student)">Удалить</button>
       </td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        <button style="background: #9CD4E8" mat-raised-button (click)="openEditorDialog(student)">Редактировать</button>
+        <button style="background: #9CD4E8" mat-raised-button (click)="openEditor(student)">Редактировать</button>
       </td>
     </tr>
     </tbody>
   </table>
+  <app-edit ></app-edit>
 </div>
 

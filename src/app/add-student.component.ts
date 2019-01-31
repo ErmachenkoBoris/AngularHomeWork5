@@ -1,27 +1,40 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
-import {TestCommand} from '@angular/cli/commands/test-impl';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import { Inject } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import {Student} from './app.component';
+import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
+import {AppHelp} from './app-help';
 
 @Component({
+  selector: 'app-add',
   template: `
-    <div style="font-size: 1vh;">
-      <h1 mat-dialog-title>Добавление студента</h1>
-    <form [formGroup]="myform" (ngSubmit)="submit(myform)">
-      <input class="form-control" label="Имя"  formControlName="name">
-      <input class="form-control"  formControlName="surname">
-      <input class="form-control" label="Отчество"  formControlName="patronymic">
-      <input class="form-control" label="Дата Рождения"  formControlName="datebd">
-      <input class="form-control" label="Имя" formControlName="mark">
-      <mat-dialog-actions>
-        <button mat-button type="submit" >Сохранить</button>
-        <button mat-button [mat-dialog-close]="false">Отмена</button>
-      </mat-dialog-actions>
-    </form>
-    </div>
-  `
+    <div style="font-size: 2vh;">
+      <h1 mat-dialog-title>Редактирование</h1>
+      <form [formGroup]="myform" (ngSubmit)="submit(myform)">
+        <input class="form-control" label="Имя"  formControlName="name">
+        <div class="error" *ngIf="isControlInvalid('name')">
+          Имя должно состоять только из русских букв и не совпадать с Фамилией и Отчеством
+        </div>
+        <input class="form-control"  formControlName="surname">
+        <div class="error" *ngIf="isControlInvalid('surname')">
+          Фамилия должна состоять только из русских букв и не совпадать с именем
+        </div>
+        <input class="form-control"   formControlName="patronymic">
+        <div class="error" *ngIf="isControlInvalid('patronymic')">
+          Отчество должно состоять только из русских букв и не совпадать с именем
+        </div>
+        <input class="form-control"   formControlName="datebd">
+        <div class="error" *ngIf="isControlInvalid('datebd')">
+          формат даты мм/дд/гггг, дата должна отличаться более, чем на 10 от текущей!
+        </div>
+        <input class="form-control" formControlName="mark">
+        <div class="error" *ngIf="isControlInvalid('mark')">
+          средний балл - только число в формате x.x или x
+        </div>
+        <mat-dialog-actions>
+          <button mat-button type="submit" >Сохранить</button>
+          <button mat-button [mat-dialog-close]="false">Отмена</button>
+        </mat-dialog-actions>
+      </form>
+    </div>`
 })
 export class AddStudentComponent implements OnInit {
   myform: FormGroup;
@@ -33,16 +46,73 @@ export class AddStudentComponent implements OnInit {
     this.initForm();
   }
   submit(form) {
-    console.log(11111);
-    this.dialogRef.close(this.myform.value);
-    // let Stud=new Student()
-    console.log(this.myform.value);
+    const controls = this.myform.controls;
+    let flag = 0;
+    for (var key in controls) {
+      if (this.isControlInvalid(key)) {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag === 0) {
+      this.dialogRef.close(this.myform.value);
+    }
+    flag = 0;
   }
   initForm() {
     this.myform = this.formBuilder.group(
-      {name: new FormControl('Имя'),surname: new FormControl('Фамилия'),
-        patronymic: new FormControl('Отчество'), datebd: new FormControl('Дата рождения'),
-        mark: new FormControl('Средний балл')});
+      {
+        name: new FormControl('имя', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+          this.nameValidator]),
+        surname: new FormControl('фамилия', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+          this.surnameAndPatronymicValidator]),
+        patronymic: new FormControl('отчество', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+          this.surnameAndPatronymicValidator]),
+        datebd: new FormControl('дата рождения',
+          [Validators.required, Validators.pattern(
+            '[0-9]{2}/[0-9]{2}/[0-9]{4}'), this.dateValidator]),
+        mark: new FormControl('оценка', [Validators.required, Validators.pattern('[0-9]+(.[0-9])?')])
+      });
+  }
+  private nameValidator = (control: FormControl) => {
+    if (this.myform) {
+      if (control.value === this.myform.value.surname ||
+        control.value === this.myform.value.patronymic) {
+        return {invalidName: 'Имя и/или Фамилия и/или Отчество совпадают'};
+      } else {
+        return null;
+      }
+    }
+  }
+  private surnameAndPatronymicValidator = (control: FormControl) => {
+    if (this.myform) {
+      if (control.value === this.myform.value.name) {
+        return {invalidName: 'Имя и/или Фамилия и/или Отчество совпадают'};
+      } else {
+        return null;
+      }
+    }
+  }
+
+  private dateValidator = (control: FormControl) => {
+    let value1;
+    if (this.myform) {
+      if (this.myform.value.datebd) {
+        value1 = new Date(control.value);
+      }
+      const value2 = new Date();
+      const value3 = new Date(value2.getFullYear() - 10, value2.getMonth(), value2.getDate());
+      if (value1 > value3) {
+        return {invalidName: 'Дата отличается меньше, чем на 10 лет от текущей'};
+      } else {
+        return null;
+      }
+    }
+  }
+  isControlInvalid(controlName: string): boolean {
+    const control = this.myform.controls[controlName];
+    const result = control.invalid;
+    return result;
   }
 }
 

@@ -1,11 +1,10 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
-import {TestCommand} from '@angular/cli/commands/test-impl';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { Inject } from '@angular/core';
-
+import {AppHelp} from './app-help';
 
 @Component({
-  selector: 'app-test',
+  selector: 'app-dell',
   encapsulation: ViewEncapsulation.None,
   template: `
     <h1 mat-dialog-title>Подтверждение</h1>
@@ -21,15 +20,12 @@ import { Inject } from '@angular/core';
   `
 })
 export class FileNameDialogComponent implements OnInit {
-  // data: string;
   constructor(
     public dialogRef: MatDialogRef<FileNameDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) {
   }
-
   ngOnInit() {
-
   }
 }
 
