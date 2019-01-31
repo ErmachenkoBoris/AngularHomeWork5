@@ -6,7 +6,7 @@ import {AppHelp} from './app-help';
 @Component({
   selector: 'app-edit',
   template: `
-    <div *ngIf="HideEdit" style="font-size: 2vh;">
+    <div *ngIf="1" style="font-size: 2vh;">
       <h1 mat-dialog-title>Редактирование</h1>
     <form [formGroup]="myform" (ngSubmit)="submit(myform)">
       <input class="form-control" label="Имя"  formControlName="name">

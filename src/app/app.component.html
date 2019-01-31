@@ -71,11 +71,10 @@
         <button style="background: darksalmon" mat-raised-button (click)="openDeleteStudentDialog(student)">Удалить</button>
       </td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        <button style="background: #9CD4E8" mat-raised-button (click)="openEditor(student)">Редактировать</button>
+        <button style="background: #9CD4E8" mat-raised-button (click)="openEditorDialog(student)">Редактировать</button>
       </td>
     </tr>
     </tbody>
   </table>
-  <app-edit ></app-edit>
 </div>
 
