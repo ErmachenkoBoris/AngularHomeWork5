@@ -1,5 +1,4 @@
-import {Component, ViewEncapsulation, OnInit, DoCheck} from '@angular/core';
-import { Inject } from '@angular/core';
+import {Component, OnInit, DoCheck} from '@angular/core';
 import {AppHelp} from './app-help';
 import {Student} from './app-Student';
 
@@ -14,7 +13,7 @@ import {Student} from './app-Student';
         margin:-100px 0 0 -200px;">
       <h1>Подтверждение</h1>
       <div style="font-size: 2vh;" [title]="HideDelCheck()">
-        Вы действительно хотите удалить студента {{Stud.surname}}>?
+        Вы действительно хотите <br>удалить студента {{Stud.surname}}?
         <button (click)="submit()">Удалить</button>
         <button (click)="cansel()">Отмена</button>
       </div>
@@ -29,7 +28,6 @@ export class FileNameDialogComponent extends  AppHelp implements OnInit, DoCheck
     this.Stud = new Student('', '', '', '', 0)
   }
   ngOnInit() {
-
   }
   ngDoCheck() {
     this.Stud = AppHelp.FromEditStudent;

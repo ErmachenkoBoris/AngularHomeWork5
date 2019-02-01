@@ -1,8 +1,7 @@
-import {Component, ViewEncapsulation, OnInit, Inject, DoCheck} from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, ValidationErrors } from '@angular/forms';
+import {Component, OnInit, DoCheck} from '@angular/core';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {Student} from './app-Student';
 import {AppHelp} from './app-help';
-import {first} from 'rxjs/operators';
 @Component({
   selector: 'app-edit',
   template: `
@@ -40,7 +39,6 @@ import {first} from 'rxjs/operators';
       </div>
     </form>
       </div>
-    <div [style]="checkStyle()"> </div>
   `
 })
 export class EditorComponent extends AppHelp implements OnInit, DoCheck {
@@ -56,11 +54,8 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck {
     this.initForm();
   }
   ngDoCheck(): number {
-    console.log('Docheck');
-    console.log(this.firstTime);
     if (AppHelp.HideEdit && !this.firstTime) {
       this.firstTime = 1;
-      console.log('---check');
       this.myform = this.formBuilder.group(
         {
           name: new FormControl(AppHelp.FromEditStudent.name, [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
@@ -83,7 +78,6 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck {
     for (let mykey in controls) {
       if (this.isControlInvalid(mykey)) {
         flag = 1;
-        console.log('ERRRORR');
         break;
       }
     }
@@ -145,14 +139,6 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck {
   }
   private surnameAndPatronymicValidator = (control: FormControl) => {
     if (this.myform) {
-      console.log('---');
-      console.log(control.value);
-      console.log(this.myform.value.name);
-      console.log(this.myform.value.surname);
-      console.log(this.myform.value.patronymic);
-      console.log(this.myform.value.datebd);
-      console.log(this.myform.value.mark);
-      console.log('---');
       if (control.value === this.myform.value.name) {
         return {invalidName: 'Имя и/или Фамилия и/или Отчество совпадают'};
       } else {
@@ -182,10 +168,5 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck {
     this.firstTime = 0;
     AppHelp.HideEdit = 0;
   }
-  checkStyle() {
-    if (AppHelp.HideEdit) {
-      return 'position: fixed; left: -100%; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); opacity: 1;' +
-        'transition: opacity 0.3s ease;';
-    }
-  }
+
 }

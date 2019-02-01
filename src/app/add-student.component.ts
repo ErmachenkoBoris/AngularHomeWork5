@@ -1,7 +1,6 @@
-import {Component, ViewEncapsulation, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {AppHelp} from './app-help';
-
 @Component({
   selector: 'app-add',
   template: `
@@ -64,7 +63,6 @@ export class AddStudentComponent implements OnInit {
       AppHelp.ConfirmAdd = 1;
       AppHelp.HideAdd = 0;
     }
-
     flag = 0;
   }
   initForm() {
@@ -107,7 +105,6 @@ export class AddStudentComponent implements OnInit {
       }
     }
   }
-
   private dateValidator = (control: FormControl) => {
     let value1;
     if (this.myform) {

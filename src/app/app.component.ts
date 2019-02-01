@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FileNameDialogComponent } from './file-name-dialog.compomemt';
-import { EditorComponent } from './editor.component';
-import { AddStudentComponent } from './add-student.component';
+import { Component} from '@angular/core';
 import {AppHelp} from './app-help';
 import {Student} from './app-Student';
 
@@ -30,10 +27,6 @@ export class AppComponent extends AppHelp {
   maxdb: any = new Date('2012-05-29');
   mindb: any = new Date('1950-05-29');
   on = 0;
-  delete = 0;
-  fileNameDialogRef: any;
-  fileNameDialogEd: any;
-  fileNameDialogAd: any;
   constructor() {super(); }
   changeStudent(St: Student, St2: Student) {
     for (let i = 0; i < this.database.length; i++) {
@@ -82,7 +75,6 @@ export class AppComponent extends AppHelp {
     AppHelp.HideDel = 1;
     return 1;
   }
-
   openAddDialog(): number {
     // AppHelp.AddStudent = new Student(St.name, St.surname, St.patronymic, St.datebd, St.mark);
     AppHelp.HideAdd = 1;
@@ -93,7 +85,6 @@ export class AppComponent extends AppHelp {
       return '#FA5C34';
     } else {return ''; }
   }
-
   checkSearch(surmame: string): string {
     if (this.surname === surmame) {
       return '#9CD4E8';
@@ -136,7 +127,6 @@ export class AppComponent extends AppHelp {
       }
     }
   }
-
   sortDate(): void {
     const length: number = this.database.length;
     let maxj: number;
@@ -156,7 +146,6 @@ export class AppComponent extends AppHelp {
       }
     }
   }
-
   sortName(): void {
     const length: number = this.database.length;
     let maxj: number;
@@ -176,7 +165,6 @@ export class AppComponent extends AppHelp {
       }
     }
   }
-
   sortSerName(): void {
     const length: number = this.database.length;
     let maxj: number;
@@ -196,7 +184,6 @@ export class AppComponent extends AppHelp {
       }
     }
   }
-
   sortPatronymic(): void {
     const length: number = this.database.length;
     let maxj: number;
@@ -250,7 +237,6 @@ export class AppComponent extends AppHelp {
     }
     return 1;
   }
-
   checkAddOnly(): number {
     return AppHelp.HideAdd;
   }
