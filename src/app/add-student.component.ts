@@ -1,27 +1,30 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {AppHelp} from './app-help';
 
 @Component({
   selector: 'app-add',
   template: `
-    <div style="font-size: 2vh;">
-      <h1 mat-dialog-title>Редактирование</h1>
+    <div *ngIf="HideAddCheck()" style="font-size: 2vh;  background: #4ccd56;
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin:-100px 0 0 -200px">
+      <h1> Добавление Студента</h1>
       <form [formGroup]="myform" (ngSubmit)="submit(myform)">
-        <input class="form-control" label="Имя"  formControlName="name">
+        <input class="form-control" label="Имя" formControlName="name">
         <div class="error" *ngIf="isControlInvalid('name')">
-          Имя должно состоять только из русских букв и не совпадать с Фамилией и Отчеством
+          Имя должно состоять только из русских букв(без пробелов) и не совпадать с Фамилией и Отчеством
         </div>
-        <input class="form-control"  formControlName="surname">
+        <input class="form-control" formControlName="surname">
         <div class="error" *ngIf="isControlInvalid('surname')">
-          Фамилия должна состоять только из русских букв и не совпадать с именем
+          Фамилия должна состоять только из русских букв(без пробелов) и не совпадать с именем
         </div>
-        <input class="form-control"   formControlName="patronymic">
+        <input class="form-control" formControlName="patronymic">
         <div class="error" *ngIf="isControlInvalid('patronymic')">
-          Отчество должно состоять только из русских букв и не совпадать с именем
+          Отчество должно состоять только из русских букв(без пробелов) и не совпадать с именем
         </div>
-        <input class="form-control"   formControlName="datebd">
+        <input class="form-control" formControlName="datebd">
         <div class="error" *ngIf="isControlInvalid('datebd')">
           формат даты мм/дд/гггг, дата должна отличаться более, чем на 10 от текущей!
         </div>
@@ -29,10 +32,9 @@ import {AppHelp} from './app-help';
         <div class="error" *ngIf="isControlInvalid('mark')">
           средний балл - только число в формате x.x или x
         </div>
-        <mat-dialog-actions>
-          <button mat-button type="submit" >Сохранить</button>
-          <button mat-button [mat-dialog-close]="false">Отмена</button>
-        </mat-dialog-actions>
+
+        <button type="submit">Сохранить</button>
+        <button (click)="cansel()">Отмена</button>
       </form>
     </div>`
 })
@@ -40,7 +42,6 @@ export class AddStudentComponent implements OnInit {
   myform: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<AddStudentComponent>
   ) {}
   ngOnInit() {
     this.initForm();
@@ -55,24 +56,37 @@ export class AddStudentComponent implements OnInit {
       }
     }
     if (flag === 0) {
-      this.dialogRef.close(this.myform.value);
+      AppHelp.AddStudent.name = this.myform.value.name;
+      AppHelp.AddStudent.surname = this.myform.value.surname;
+      AppHelp.AddStudent.patronymic = this.myform.value.patronymic;
+      AppHelp.AddStudent.datebd = new Date(this.myform.value.datebd);
+      AppHelp.AddStudent.mark = this.myform.value.mark;
+      AppHelp.ConfirmAdd = 1;
+      AppHelp.HideAdd = 0;
     }
+
     flag = 0;
   }
   initForm() {
     this.myform = this.formBuilder.group(
       {
-        name: new FormControl('имя', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+        name: new FormControl('имя', [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
           this.nameValidator]),
-        surname: new FormControl('фамилия', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+        surname: new FormControl('фамилия', [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
           this.surnameAndPatronymicValidator]),
-        patronymic: new FormControl('отчество', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+        patronymic: new FormControl('отчество', [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
           this.surnameAndPatronymicValidator]),
         datebd: new FormControl('дата рождения',
           [Validators.required, Validators.pattern(
             '[0-9]{2}/[0-9]{2}/[0-9]{4}'), this.dateValidator]),
         mark: new FormControl('оценка', [Validators.required, Validators.pattern('[0-9]+(.[0-9])?')])
       });
+  }
+  cansel(): void {
+    AppHelp.HideAdd = 0;
+  }
+  HideAddCheck() {
+    return AppHelp.HideAdd;
   }
   private nameValidator = (control: FormControl) => {
     if (this.myform) {

@@ -16,37 +16,6 @@ import {PortalModule} from '@angular/cdk/portal';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTableModule} from '@angular/cdk/table';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-} from '@angular/material';
 import {AppComponent} from './app.component';
 
 /**
@@ -66,40 +35,9 @@ import {AppComponent} from './app.component';
     CdkStepperModule,
     CdkTableModule,
 
-    // Material
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSlideToggleModule,
-    MatSliderModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatNativeDateModule,
   ]
 })
 export class MaterialModule {}
-
 
 
 @NgModule({
@@ -112,9 +50,8 @@ export class MaterialModule {}
     BrowserAnimationsModule
   ],
   declarations: [AppComponent, FileNameDialogComponent, AddStudentComponent, EditorComponent],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent, FileNameDialogComponent, AddStudentComponent, EditorComponent],
   providers: [],
-  entryComponents: [FileNameDialogComponent, EditorComponent, AddStudentComponent]
 })
 export class AppModule {}
 

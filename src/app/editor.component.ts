@@ -1,96 +1,133 @@
-import {Component, ViewEncapsulation, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {Component, ViewEncapsulation, OnInit, Inject, DoCheck} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidationErrors } from '@angular/forms';
-import {Student} from './app.component';
+import {Student} from './app-Student';
 import {AppHelp} from './app-help';
+import {first} from 'rxjs/operators';
 @Component({
   selector: 'app-edit',
   template: `
-    <div *ngIf="1" style="font-size: 2vh;">
-      <h1 mat-dialog-title>Редактирование</h1>
-    <form [formGroup]="myform" (ngSubmit)="submit(myform)">
-      <input class="form-control" label="Имя"  formControlName="name">
+    <div *ngIf="HideEditCheck() " [title]="HideEditCheck()" class="menu" >
+    <form [formGroup] = "myform"  (ngSubmit)="submit(myform)" >
+      <div style="font-size: 2vh;
+        background: #008080;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin:-100px 0 0 -200px;">
+      <h1 >Редактирование Студента <br></h1>
+      <input class="form-control" label="Имя"   formControlName="name">
       <div class="error" *ngIf="isControlInvalid('name')">
-        Имя должно состоять только из русских букв и не совпадать с Фамилией и Отчеством
+        Имя должно состоять только из русских букв(без пробелов) и не совпадать с Фамилией и Отчеством
       </div>
       <input class="form-control"  formControlName="surname">
       <div class="error" *ngIf="isControlInvalid('surname')">
-        Фамилия должна состоять только из русских букв и не совпадать с именем
+        Фамилия должна состоять только из русских букв(без пробелов) и не совпадать с именем
       </div>
       <input class="form-control"   formControlName="patronymic">
       <div class="error" *ngIf="isControlInvalid('patronymic')">
-        Отчество должно состоять только из русских букв и не совпадать с именем
+        Отчество должно состоять только из русских букв(без пробелов) и не совпадать с именем
       </div>
       <input class="form-control"   formControlName="datebd">
       <div class="error" *ngIf="isControlInvalid('datebd')">
         формат даты мм/дд/гггг, дата должна отличаться более, чем на 10 от текущей!
       </div>
-      <input class="form-control" formControlName="mark">
+      <input class="form-control"  formControlName="mark">
       <div class="error" *ngIf="isControlInvalid('mark')">
         средний балл - только число в формате x.x или x
       </div>
-      <mat-dialog-actions>
-        <button mat-button type="submit" >Сохранить</button>
-        <button mat-button [mat-dialog-close]="false">Отмена</button>
-      </mat-dialog-actions>
+        <button type="submit" >Сохранить</button>
+        <button  (click)="HideEditNull()">Отмена</button>
+      </div>
     </form>
-    </div>
+      </div>
+    <div [style]="checkStyle()"> </div>
   `
 })
-export class EditorComponent extends AppHelp implements OnInit {
+export class EditorComponent extends AppHelp implements OnInit, DoCheck {
   myform: FormGroup;
+  Stud: Student;
+  firstTime = 0;
   constructor(
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<EditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Student
   ) {
     super();
   }
   ngOnInit() {
     this.initForm();
   }
+  ngDoCheck(): number {
+    console.log('Docheck');
+    console.log(this.firstTime);
+    if (AppHelp.HideEdit && !this.firstTime) {
+      this.firstTime = 1;
+      console.log('---check');
+      this.myform = this.formBuilder.group(
+        {
+          name: new FormControl(AppHelp.FromEditStudent.name, [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
+            this.nameValidator]),
+          surname: new FormControl(AppHelp.FromEditStudent.surname, [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
+            this.surnameAndPatronymicValidator]),
+          patronymic: new FormControl(AppHelp.FromEditStudent.patronymic, [Validators.required, Validators.pattern(/^[А-Яа-яЁё]+$/u),
+            this.surnameAndPatronymicValidator]),
+          datebd: new FormControl(this.makedate(),
+            [Validators.required, Validators.pattern(
+              '[0-9]{2}/[0-9]{2}/[0-9]{4}'), this.dateValidator]),
+          mark: new FormControl(AppHelp.FromEditStudent.mark, [Validators.required, Validators.pattern('[0-9]+(.[0-9])?')])
+        });
+      return 1;
+    }
+  }
   submit(form) {
     const controls = this.myform.controls;
-    let flag = 0;
-    for (var key in controls) {
-      if (this.isControlInvalid(key)) {
+    var flag = 0;
+    for (let mykey in controls) {
+      if (this.isControlInvalid(mykey)) {
         flag = 1;
+        console.log('ERRRORR');
         break;
       }
     }
     if (flag === 0) {
-      this.dialogRef.close(this.myform.value);
+      AppHelp.EditStudent.name = this.myform.value.name;
+      AppHelp.EditStudent.surname = this.myform.value.surname;
+      AppHelp.EditStudent.patronymic = this.myform.value.patronymic;
+      AppHelp.EditStudent.datebd = new Date(this.myform.value.datebd);
+      AppHelp.EditStudent.mark = this.myform.value.mark;
+      AppHelp.ConfirmEdit = 1;
+      AppHelp.HideEdit = 0;
+      this.firstTime = 0;
     }
     flag = 0;
   }
-
   initForm() {
-
     this.myform = this.formBuilder.group(
       {
-        name: new FormControl(this.data.name, [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+        name: new FormControl('', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/iu),
           this.nameValidator]),
-        surname: new FormControl(this.data.surname, [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+        surname: new FormControl('', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
         this.surnameAndPatronymicValidator]),
-        patronymic: new FormControl(this.data.patronymic, [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
+        patronymic: new FormControl('', [Validators.required, Validators.pattern(/^[А-Яа-яЁё\s]+$/),
         this.surnameAndPatronymicValidator]),
-        datebd: new FormControl(this.makedate(),
+        datebd: new FormControl(null,
           [Validators.required, Validators.pattern(
           '[0-9]{2}/[0-9]{2}/[0-9]{4}'), this.dateValidator]),
-        mark: new FormControl(<number>this.data.mark, [Validators.required, Validators.pattern('[0-9]+(.[0-9])?')])
+        mark: new FormControl('', [Validators.required, Validators.pattern('[0-9]+(.[0-9])?')])
       });
   }
   makedate(): string {
     let day: string;
     let mounth: string;
-  if (this.data.datebd.getDate () < 10 ) {day = '0' + this.data.datebd.getDate(); } else {
-    day = <string><unknown>this.data.datebd.getDate ();
-  }
-  if (this.data.datebd.getMonth() < 9 ) {mounth = '0' + (this.data.datebd.getMonth() + 1); } else {
-    mounth = <string><unknown>(this.data.datebd.getMonth() + 1);
-  }
-  return mounth + '/' + day + '/' +  this.data.datebd.getFullYear();
-}
+    if (AppHelp.FromEditStudent.datebd.getDate() < 10) {
+      day = '0' + AppHelp.FromEditStudent.datebd.getDate();
+    } else {
+       day = <string><unknown>AppHelp.FromEditStudent.datebd.getDate ();
+      }
+    if (AppHelp.FromEditStudent.datebd.getMonth() < 9 ) {mounth = '0' + (AppHelp.FromEditStudent.datebd.getMonth() + 1); } else {
+      mounth = <string><unknown>(AppHelp.FromEditStudent.datebd.getMonth() + 1);
+       }
+       return mounth + '/' + day + '/' +  AppHelp.FromEditStudent.datebd.getFullYear();
+      return '';
+    }
   isControlInvalid(controlName: string): boolean {
     const control = this.myform.controls[controlName];
     const result = control.invalid && control.touched;
@@ -108,6 +145,14 @@ export class EditorComponent extends AppHelp implements OnInit {
   }
   private surnameAndPatronymicValidator = (control: FormControl) => {
     if (this.myform) {
+      console.log('---');
+      console.log(control.value);
+      console.log(this.myform.value.name);
+      console.log(this.myform.value.surname);
+      console.log(this.myform.value.patronymic);
+      console.log(this.myform.value.datebd);
+      console.log(this.myform.value.mark);
+      console.log('---');
       if (control.value === this.myform.value.name) {
         return {invalidName: 'Имя и/или Фамилия и/или Отчество совпадают'};
       } else {
@@ -128,6 +173,19 @@ export class EditorComponent extends AppHelp implements OnInit {
       } else {
         return null;
       }
+    }
+  }
+  HideEditCheck(): number {
+    return AppHelp.HideEdit;
+  }
+  HideEditNull(): void {
+    this.firstTime = 0;
+    AppHelp.HideEdit = 0;
+  }
+  checkStyle() {
+    if (AppHelp.HideEdit) {
+      return 'position: fixed; left: -100%; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); opacity: 1;' +
+        'transition: opacity 0.3s ease;';
     }
   }
 }

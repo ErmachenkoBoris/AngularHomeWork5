@@ -2,23 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FileNameDialogComponent } from './file-name-dialog.compomemt';
 import { EditorComponent } from './editor.component';
 import { AddStudentComponent } from './add-student.component';
-import {VERSION, MatDialog, MatDialogRef} from '@angular/material';
 import {AppHelp} from './app-help';
+import {Student} from './app-Student';
 
-export class Student {
-  name: string;
-  surname: string;
-  patronymic: string;
-  datebd: Date;
-  mark: number;
-  constructor(name: string, surname: string, patronymic: string, datebd: any, mark: number) {
-    this.name = name;
-    this.surname = surname;
-    this.patronymic = patronymic;
-    this.datebd = datebd;
-    this.mark = mark;
-  }
-}
 @Component({
   selector: 'app-purchase',
   styleUrls: ['./app.component.css'],
@@ -42,16 +28,25 @@ export class AppComponent extends AppHelp {
   maxdate: string;
   mindate: string;
   maxdb: any = new Date('2012-05-29');
-  mindb: any = new Date('1999-05-29');
+  mindb: any = new Date('1950-05-29');
   on = 0;
   delete = 0;
   fileNameDialogRef: any;
   fileNameDialogEd: any;
   fileNameDialogAd: any;
-  constructor(public dialog: MatDialog) {super(); }
+  constructor() {super(); }
   changeStudent(St: Student, St2: Student) {
     for (let i = 0; i < this.database.length; i++) {
-      if (St === this.database[i]) {
+      let flag = 0;
+      if (St.name === this.database[i].name &&
+          St.surname === this.database[i].surname &&
+          St.patronymic === this.database[i].patronymic &&
+          St.datebd === this.database[i].datebd &&
+          St.mark === this.database[i].mark) {
+            flag = 1;
+      }
+      if (flag === 1) {
+        flag = 0;
         this.database[i].name = St2.name;
         this.database[i].surname = St2.surname;
         this.database[i].patronymic = St2.patronymic;
@@ -62,7 +57,16 @@ export class AppComponent extends AppHelp {
   }
   deleteStudent(St: Student): number {
     for (let i = 0; i < this.database.length; i++) {
-      if (St === this.database[i]) {
+      let flag = 0;
+      if (St.name === this.database[i].name &&
+        St.surname === this.database[i].surname &&
+        St.patronymic === this.database[i].patronymic &&
+        St.datebd === this.database[i].datebd &&
+        St.mark === this.database[i].mark) {
+        flag = 1;
+      }
+      if (flag === 1 ) {
+        flag = 0;
         this.database.splice(i, 1);
         return 1;
       }
@@ -74,32 +78,15 @@ export class AppComponent extends AppHelp {
     return 1;
   }
   openDeleteStudentDialog(St: Student): number {
-    this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {data: {name: St.surname}});
-    this.fileNameDialogRef.afterClosed().subscribe(result => {
-      this.delete = result;
-      if (this.delete) {
-        this.deleteStudent(St);
-        return 1;
-      }
-    });
-    return 0;
+    AppHelp.DelStudent = new Student(St.name, St.surname, St.patronymic, St.datebd, St.mark);
+    AppHelp.HideDel = 1;
+    return 1;
   }
-  openEditorDialog(St: Student): void {
-    this.fileNameDialogEd = this.dialog.open(EditorComponent, {
-      data: St
-    });
-    this.fileNameDialogEd.afterClosed().subscribe(result => { if (result) {
-      const St2 = new Student(result.name, result.surname, result.patronymic, new Date(result.datebd), result.mark);
-      this.changeStudent(St, St2); }
-    });
-  }
-  openAddDialog(St: Student): void {
-    this.fileNameDialogAd = this.dialog.open(AddStudentComponent);
-    this.fileNameDialogAd.afterClosed().subscribe(result => { if (result) {
-      const St2 = new Student(result.name, result.surname, result.patronymic, new Date(result.datebd), result.mark);
-      this.addStudent(St2);
-    }
-    });
+
+  openAddDialog(): number {
+    // AppHelp.AddStudent = new Student(St.name, St.surname, St.patronymic, St.datebd, St.mark);
+    AppHelp.HideAdd = 1;
+    return 1;
   }
   checkMark(mark: number): string {
     if (mark < 3 && this.flag === true) {
@@ -238,8 +225,40 @@ export class AppComponent extends AppHelp {
   turnOn(value: number): void {
     this.on = value;
   }
-  openEditor() {
-    this.HideEdit = 1;
+  openEditor(St: Student) {
+    AppHelp.FromEditStudent = new Student(St.name, St.surname, St.patronymic, St.datebd, St.mark);
+    AppHelp.HideEdit = 1;
+  }
+  checkAdd(): number {
+    if ( AppHelp.ConfirmAdd === 1) {
+      AppHelp.ConfirmAdd = 0;
+      this.addStudent(AppHelp.AddStudent);
+    }
+    return 1;
+  }
+  checkDel(): number {
+    if ( AppHelp.ConfirmDel === 1) {
+      AppHelp.ConfirmDel = 0;
+      this.deleteStudent(AppHelp.DelStudent);
+    }
+    return 1;
+  }
+  checkEdit(): number {
+    if ( AppHelp.ConfirmEdit === 1) {
+      AppHelp.ConfirmEdit = 0;
+      this.changeStudent(AppHelp.FromEditStudent, AppHelp.EditStudent);
+    }
+    return 1;
+  }
+
+  checkAddOnly(): number {
+    return AppHelp.HideAdd;
+  }
+  checkDelOnly(): number {
+    return AppHelp.HideDel;
+  }
+  checkEditOnly(): number {
+    return AppHelp.HideEdit;
   }
 
 }

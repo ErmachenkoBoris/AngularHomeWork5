@@ -1,31 +1,48 @@
-import {Component, ViewEncapsulation, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {Component, ViewEncapsulation, OnInit, DoCheck} from '@angular/core';
 import { Inject } from '@angular/core';
 import {AppHelp} from './app-help';
+import {Student} from './app-Student';
 
 @Component({
   selector: 'app-dell',
-  encapsulation: ViewEncapsulation.None,
   template: `
-    <h1 mat-dialog-title>Подтверждение</h1>
-    <div style="font-size: 2vh;">
-    <mat-dialog-content >
-      Вы действительно хотите удалить студента {{data.name}}?
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true">Удалить</button>
-      <button mat-button [mat-dialog-close]="false">Отмена</button>
-    </mat-dialog-actions>
+    <div *ngIf="HideDelCheck()" style="font-size: 2vh;
+        background: #ff8765;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin:-100px 0 0 -200px;">
+      <h1>Подтверждение</h1>
+      <div style="font-size: 2vh;" [title]="HideDelCheck()">
+        Вы действительно хотите удалить студента {{Stud.surname}}>?
+        <button (click)="submit()">Удалить</button>
+        <button (click)="cansel()">Отмена</button>
+      </div>
     </div>
   `
 })
-export class FileNameDialogComponent implements OnInit {
+export class FileNameDialogComponent extends  AppHelp implements OnInit, DoCheck {
+  Stud: Student;
   constructor(
-    public dialogRef: MatDialogRef<FileNameDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data
   ) {
+    super();
+    this.Stud = new Student('', '', '', '', 0)
   }
   ngOnInit() {
+
+  }
+  ngDoCheck() {
+    this.Stud = AppHelp.FromEditStudent;
+  }
+  HideDelCheck(): number {
+    return AppHelp.HideDel;
+  }
+  submit(): void {
+    AppHelp.ConfirmDel = 1;
+    this.cansel();
+  }
+  cansel(): void {
+    AppHelp.HideDel = 0;
   }
 }
 
