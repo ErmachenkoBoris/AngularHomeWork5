@@ -1,13 +1,15 @@
-import { Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy, ChangeDetectorRef, ApplicationRef, DoCheck} from '@angular/core';
 import {AppHelp} from './app-help';
 import {Student} from './app-Student';
+import {TouchMenuDirective} from './touchMenu.directive';
 
 @Component({
   selector: 'app-purchase',
   styleUrls: ['./app.component.css'],
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent extends AppHelp {
+export class AppComponent extends AppHelp implements DoCheck {
   database: Student[] =
     [
       {name: 'Иван', surname: 'Соколов', patronymic: 'Борисович', datebd: new Date('2000-01-03'), mark: 5},
@@ -27,7 +29,13 @@ export class AppComponent extends AppHelp {
   maxdb: any = new Date('2012-05-29');
   mindb: any = new Date('1950-05-29');
   on = 0;
-  constructor() {super(); }
+  constructor(public app: ApplicationRef, public cdr: ChangeDetectorRef) {
+    super();
+  }
+  ngDoCheck(): void {
+    this.cdr.detectChanges();
+  }
+
   changeStudent(St: Student, St2: Student) {
     for (let i = 0; i < this.database.length; i++) {
       let flag = 0;
@@ -245,6 +253,16 @@ export class AppComponent extends AppHelp {
   }
   checkEditOnly(): number {
     return AppHelp.HideEdit;
+  }
+  changBack(): number {
+    return AppHelp.HideEdit || AppHelp.HideDel || AppHelp.HideAdd;
+
+}
+  gerWidth(): number {
+    return document.getElementById('1').offsetWidth;
+  }
+  getLenth(): number {
+    return document.getElementById('1').offsetHeight;
   }
 
 }

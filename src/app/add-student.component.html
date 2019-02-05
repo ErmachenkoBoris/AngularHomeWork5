@@ -1,7 +1,8 @@
 <div *ngIf="HideAddCheck()" class="add_student_style">
   <h1> Добавление Студента</h1>
-  <form [formGroup]="myform" (ngSubmit)="submit(myform)">
+  <form [formGroup]="myform" (ngSubmit)="submit(myform) ">
     <input class="form-control" label="Имя" formControlName="name">
+    <div class="wornings">
     <div class="error" *ngIf="isControlInvalid('name')">
       Имя должно состоять только из русских букв(без пробелов) и не совпадать с Фамилией и Отчеством
     </div>
@@ -21,7 +22,7 @@
     <div class="error" *ngIf="isControlInvalid('mark')">
       средний балл - только число в формате x.x или x
     </div>
-
+    </div>
     <button type="submit">Сохранить</button>
     <button (click)="cansel()">Отмена</button>
   </form>

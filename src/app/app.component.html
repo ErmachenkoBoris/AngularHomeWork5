@@ -1,4 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<div id="1" appMouse [width]="gerWidth()" [length]="getLenth()"  class="firstdiv">
 <div class="page-header" class="mainheader"><h1 > Таблица Студетов </h1></div>
 <div *ngIf="checkAddOnly() || checkDelOnly()|| checkEditOnly()" class="backdrop"></div>
 <div class="panel" class="maintable">
@@ -7,11 +8,11 @@
       <div >
         <div class="addcontainer">
           <div class="menuitem">
-            Подсветка Двоечников
+            Подсветка <br>Двоечников
             <input type="checkbox" [(ngModel)]="flag">
             </div>
-          <div class="menuitem"> Введите ФАМИЛИЮ для поиска:
-            <input size="20" type="text" class="text" [(ngModel)]="surname">
+          <div class="menuitem"> Введите ФАМИЛИЮ <br>для поиска:<br>
+            <input size="12" type="text" class="text" [(ngModel)]="surname">
           </div>
           <div class="menuitem">
             Фильтр по баллу:
@@ -33,27 +34,26 @@
             <input type="date" name="calendar" (change)="createDate()"
                    [(ngModel)]="maxdate"  min="1999-06-04" max="2012-05-29">
           </div>
-          <div class="menuitem">
-            <button class="button_add_style" value="Добавить студента"
-                    (click)="openAddDialog()">Добавить студента</button>
-          </div>
         </div>
       </div>
     </div>
   </div>
   <table *ngIf="checkAdd()&& checkDel()&& checkEdit()" class="tablestyle" class="table table-striped">
     <thead>
-    <tr  >
-      <th [style.background]="backcolor[1]" >
-        Имя <p><input type="button" value="отсортировать" (click)="sortName() || changeBackColorThr(1)"></p></th>
-      <th [style.background]="backcolor[2]" >
+    <tr >
+      <th appTouchMenu [changeColor]="changBack()" [style.background]="backcolor[1]" >
+        Имя <p><input   type="button" value="отсортировать" (click)="sortName() || changeBackColorThr(1)"></p></th>
+      <th appTouchMenu  [changeColor]="changBack()" [style.background]="backcolor[2]" >
         Фамилия <p><input type="button" value="отсортировать" (click)="sortSerName() || changeBackColorThr(2)"></p></th>
-      <th [style.background]="backcolor[3]" >
+      <th appTouchMenu  [changeColor]="changBack()" [style.background]="backcolor[3]" >
         Отчество <p><input type="button" value="отсортировать" (click)="sortPatronymic() || changeBackColorThr(3)"></p></th>
-      <th [style.background]="backcolor[4]" >
+      <th appTouchMenu  [changeColor]="changBack()" [style.background]="backcolor[4]" >
         Дата Рождения <p><input type="button" value="отсортировать" (click)="sortDate() || changeBackColorThr(4)"></p></th>
-      <th [style.background]="backcolor[5]">
+      <th appTouchMenu  [changeColor]="changBack()" [style.background]="backcolor[5]">
         Средний балл <p><input type="button" value="отсортировать" (click)="sortMark() || changeBackColorThr(5)"></p></th>
+      <th appTouchMenu  [changeColor]="changBack()" colspan="2">
+        <input class="button_add_style" type="button" value="Добавить студента" (click)="openAddDialog()" value="Добавить студента">
+      </th>
     </tr>
     </thead>
     <tbody>
@@ -69,13 +69,14 @@
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         {{student.mark}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        <button class="button_del_style"  (click)="openDeleteStudentDialog(student)">Удалить</button>
+        <input type="button" class="button_del_style"  (click)="openDeleteStudentDialog(student)" value="Удалить">
+
       </td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        <button class="button_edit_style"  (click)="openEditor(student)">Редактировать</button>
+        <input type="button" class="button_edit_style"  (click)="openEditor(student)" value="редактирвать">
       </td>
     </tr>
     </tbody>
   </table>
 </div>
-
+</div>

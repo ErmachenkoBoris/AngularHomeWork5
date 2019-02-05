@@ -1,7 +1,8 @@
-<div *ngIf="HideDelCheck()" class="delete_student_style">
+<div *ngIf="HideDelCheck()" [title]="HideDelCheck()" class="delete_student_style">
   <h1>Подтверждение</h1>
   <div style="font-size: 2vh;" [title]="HideDelCheck()">
-    Вы действительно хотите <br>удалить студента {{Stud.surname}}?
+    <div>Вы действительно хотите <br>удалить студента {{Stud.surname}}?
+    </div>
     <button (click)="submit()">Удалить</button>
     <button (click)="cansel()">Отмена</button>
   </div>

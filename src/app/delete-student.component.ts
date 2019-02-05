@@ -1,15 +1,16 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit, DoCheck, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import {AppHelp} from './app-help';
 import {Student} from './app-Student';
 
 @Component({
   selector: 'app-dell',
   styleUrls: ['./popup.component.css'],
-  templateUrl: 'delete-student.component.html'
+  templateUrl: 'delete-student.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeleteStudentComponent extends  AppHelp implements OnInit, DoCheck {
   Stud: Student;
-  constructor(
+  constructor( public cdr: ChangeDetectorRef
   ) {
     super();
     this.Stud = new Student('', '', '', '', 0)
@@ -18,6 +19,7 @@ export class DeleteStudentComponent extends  AppHelp implements OnInit, DoCheck 
   }
   ngDoCheck() {
     this.Stud = AppHelp.DelStudent;
+    this.cdr.detectChanges();
   }
   HideDelCheck(): number {
     return AppHelp.HideDel;

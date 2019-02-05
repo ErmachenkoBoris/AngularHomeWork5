@@ -1,18 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges, DoCheck} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {AppHelp} from './app-help';
 @Component({
   selector: 'app-add',
   styleUrls: ['./popup.component.css'],
-  templateUrl: 'add-student.component.html'
+  templateUrl: 'add-student.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddStudentComponent implements OnInit {
+export class AddStudentComponent implements OnInit, DoCheck {
   myform: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
+    public cdr: ChangeDetectorRef
   ) {}
   ngOnInit() {
     this.initForm();
+  }
+  ngDoCheck(): void {
+    this.cdr.detectChanges();
   }
   submit(form) {
     const controls = this.myform.controls;

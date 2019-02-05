@@ -1,26 +1,32 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit, DoCheck, ChangeDetectionStrategy, ApplicationRef, OnChanges, ChangeDetectorRef} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {Student} from './app-Student';
 import {AppHelp} from './app-help';
 @Component({
   selector: 'app-edit',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./popup.component.css'],
   templateUrl: 'editor.component.html'
 })
-export class EditorComponent extends AppHelp implements OnInit, DoCheck {
+export class EditorComponent extends AppHelp implements OnInit, DoCheck, OnChanges {
   myform: FormGroup;
   Stud: Student;
   firstTime = 0;
   constructor(
     private formBuilder: FormBuilder,
+    public app: ApplicationRef,
+    public cdr: ChangeDetectorRef
   ) {
     super();
   }
   ngOnInit() {
     this.initForm();
   }
+  ngOnChanges(): void {
+  }
   ngDoCheck(): number {
-    if (AppHelp.HideEdit && !this.firstTime) {
+    this.cdr.detectChanges();
+      if (AppHelp.HideEdit && !this.firstTime) {
       this.firstTime = 1;
       this.myform = this.formBuilder.group(
         {

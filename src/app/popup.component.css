@@ -1,23 +1,41 @@
 .delete_student_style{
+  padding: 0.7vw 0.7vw 0.7vw 0.7vw;
   font-size: 2vh;
-  background: #ff8765;
+  background: #e9e9e2;
   position:absolute;
-  top:50%;
-  left:50%;
-  margin:-100px 0 0 -200px;
+  width: 20vw;
+  height: 20vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
 }
 .editor_student_style{
+  padding: 0.7vw 0.7vw 0.7vw 0.7vw;
   font-size: 2vh;
-  background: #008080;
+  background: #ceccc9;
   position:absolute;
-  top:50%;
-  left:50%;
-  margin:-100px 0 0 -200px;
+  width: 33vw;
+  height: 55vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
 }
 .add_student_style{
-  font-size: 2vh;  background: #4ccd56;
+  padding: 0.7vw 0.7vw 0.7vw 0.7vw;
+  font-size: 2vh;  background: #e1e2df;
   position:absolute;
-  top:50%;
-  left:50%;
-  margin:-100px 0 0 -200px
+  width: 40vw;
+  height: 70vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+.wornings {
+font-weight: bold;
 }
