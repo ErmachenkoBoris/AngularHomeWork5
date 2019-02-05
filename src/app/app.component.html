@@ -1,19 +1,19 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="page-header" style="margin-left: 20vw"><h1 > Таблица Студетов </h1></div>
+<div class="page-header" class="mainheader"><h1 > Таблица Студетов </h1></div>
 <div *ngIf="checkAddOnly() || checkDelOnly()|| checkEditOnly()" class="backdrop"></div>
-<div class="panel" style="font-size: 2vh;">
+<div class="panel" class="maintable">
   <div >
     <div >
       <div >
-        <div style="width: 100%;">
-          <div style="float: left; width: 100px; height: 100px; margin-right: 5vw; margin-left: 5vw">
+        <div class="addcontainer">
+          <div class="menuitem">
             Подсветка Двоечников
             <input type="checkbox" [(ngModel)]="flag">
             </div>
-          <div style="float: left; width: 200px; height: 100px; margin-right: 5vw"> Введите ФАМИЛИЮ для поиска:
+          <div class="menuitem"> Введите ФАМИЛИЮ для поиска:
             <input size="20" type="text" class="text" [(ngModel)]="surname">
           </div>
-          <div style="float: left; width: 200px; height: 100px;">
+          <div class="menuitem">
             Фильтр по баллу:
             <select #product name="marks" id="mar" (change)="changeFilter(product.options[product.selectedIndex].value)">
               <option value="1" selected  >Больше 1</option>
@@ -23,25 +23,25 @@
             </select>
             <br>
           </div>
-          <div style="float: left; width: 200px; height: 100px;">
+          <div class="menuitem">
             Родились от:
             <input type="date" name="calendar" (change)="createDate()"
                    [(ngModel)]="mindate" min="1999-06-04" max="2012-05-29">
           </div>
-          <div style="float: left; width: 200px; height: 100px;">
+          <div class="menuitem">
             Родились до:
             <input type="date" name="calendar" (change)="createDate()"
                    [(ngModel)]="maxdate"  min="1999-06-04" max="2012-05-29">
           </div>
-          <div style="float: left; ">
-            <button style="width: 200px; height: 100px; background: greenyellow" value="Добавить студента"
+          <div class="menuitem">
+            <button class="button_add_style" value="Добавить студента"
                     (click)="openAddDialog()">Добавить студента</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <table *ngIf="checkAdd()&& checkDel()&& checkEdit()" style="margin-top: 10vh" class="table table-striped">
+  <table *ngIf="checkAdd()&& checkDel()&& checkEdit()" class="tablestyle" class="table table-striped">
     <thead>
     <tr  >
       <th [style.background]="backcolor[1]" >
@@ -69,10 +69,10 @@
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         {{student.mark}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        <button style="background: darksalmon"  (click)="openDeleteStudentDialog(student)">Удалить</button>
+        <button class="button_del_style"  (click)="openDeleteStudentDialog(student)">Удалить</button>
       </td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        <button style="background: #9CD4E8"  (click)="openEditor(student)">Редактировать</button>
+        <button class="button_edit_style"  (click)="openEditor(student)">Редактировать</button>
       </td>
     </tr>
     </tbody>

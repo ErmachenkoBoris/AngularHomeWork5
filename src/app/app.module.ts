@@ -3,16 +3,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {FileNameDialogComponent} from './file-name-dialog.compomemt';
+import {DeleteStudentComponent} from './delete-student.component';
 import {EditorComponent} from './editor.component';
 import {AddStudentComponent} from './add-student.component';
 import {AppComponent} from './app.component';
-@NgModule({
-  exports: [
-    // CDK
-  ]
-})
-export class MaterialModule {}
 @NgModule({
   imports: [
     BrowserModule,
@@ -21,8 +15,8 @@ export class MaterialModule {}
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  declarations: [AppComponent, FileNameDialogComponent, AddStudentComponent, EditorComponent],
-  bootstrap: [AppComponent, FileNameDialogComponent, AddStudentComponent, EditorComponent],
+  declarations: [AppComponent, DeleteStudentComponent, AddStudentComponent, EditorComponent],
+  bootstrap: [AppComponent, DeleteStudentComponent, AddStudentComponent, EditorComponent],
   providers: [],
 })
 export class AppModule {}

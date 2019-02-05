@@ -3,39 +3,8 @@ import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {AppHelp} from './app-help';
 @Component({
   selector: 'app-add',
-  template: `
-    <div *ngIf="HideAddCheck()" style="font-size: 2vh;  background: #4ccd56;
-  position:absolute;
-  top:50%;
-  left:50%;
-  margin:-100px 0 0 -200px">
-      <h1> Добавление Студента</h1>
-      <form [formGroup]="myform" (ngSubmit)="submit(myform)">
-        <input class="form-control" label="Имя" formControlName="name">
-        <div class="error" *ngIf="isControlInvalid('name')">
-          Имя должно состоять только из русских букв(без пробелов) и не совпадать с Фамилией и Отчеством
-        </div>
-        <input class="form-control" formControlName="surname">
-        <div class="error" *ngIf="isControlInvalid('surname')">
-          Фамилия должна состоять только из русских букв(без пробелов) и не совпадать с именем
-        </div>
-        <input class="form-control" formControlName="patronymic">
-        <div class="error" *ngIf="isControlInvalid('patronymic')">
-          Отчество должно состоять только из русских букв(без пробелов) и не совпадать с именем
-        </div>
-        <input class="form-control" formControlName="datebd">
-        <div class="error" *ngIf="isControlInvalid('datebd')">
-          формат даты мм/дд/гггг, дата должна отличаться более, чем на 10 от текущей!
-        </div>
-        <input class="form-control" formControlName="mark">
-        <div class="error" *ngIf="isControlInvalid('mark')">
-          средний балл - только число в формате x.x или x
-        </div>
-
-        <button type="submit">Сохранить</button>
-        <button (click)="cansel()">Отмена</button>
-      </form>
-    </div>`
+  styleUrls: ['./popup.component.css'],
+  templateUrl: 'add-student.component.html'
 })
 export class AddStudentComponent implements OnInit {
   myform: FormGroup;

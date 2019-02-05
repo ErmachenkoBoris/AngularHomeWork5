@@ -1,0 +1,23 @@
+.delete_student_style{
+  font-size: 2vh;
+  background: #ff8765;
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin:-100px 0 0 -200px;
+}
+.editor_student_style{
+  font-size: 2vh;
+  background: #008080;
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin:-100px 0 0 -200px;
+}
+.add_student_style{
+  font-size: 2vh;  background: #4ccd56;
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin:-100px 0 0 -200px
+}

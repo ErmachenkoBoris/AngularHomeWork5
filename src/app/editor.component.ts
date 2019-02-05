@@ -4,42 +4,8 @@ import {Student} from './app-Student';
 import {AppHelp} from './app-help';
 @Component({
   selector: 'app-edit',
-  template: `
-    <div *ngIf="HideEditCheck() " [title]="HideEditCheck()" class="menu" >
-    <form [formGroup] = "myform"  (ngSubmit)="submit(myform)" >
-      <div style="font-size: 2vh;
-        background: #008080;
-        position:absolute;
-        top:50%;
-        left:50%;
-        margin:-100px 0 0 -200px;">
-      <h1 >Редактирование Студента <br></h1>
-      <input class="form-control" label="Имя"   formControlName="name">
-      <div class="error" *ngIf="isControlInvalid('name')">
-        Имя должно состоять только из русских букв(без пробелов) и не совпадать с Фамилией и Отчеством
-      </div>
-      <input class="form-control"  formControlName="surname">
-      <div class="error" *ngIf="isControlInvalid('surname')">
-        Фамилия должна состоять только из русских букв(без пробелов) и не совпадать с именем
-      </div>
-      <input class="form-control"   formControlName="patronymic">
-      <div class="error" *ngIf="isControlInvalid('patronymic')">
-        Отчество должно состоять только из русских букв(без пробелов) и не совпадать с именем
-      </div>
-      <input class="form-control"   formControlName="datebd">
-      <div class="error" *ngIf="isControlInvalid('datebd')">
-        формат даты мм/дд/гггг, дата должна отличаться более, чем на 10 от текущей!
-      </div>
-      <input class="form-control"  formControlName="mark">
-      <div class="error" *ngIf="isControlInvalid('mark')">
-        средний балл - только число в формате x.x или x
-      </div>
-        <button type="submit" >Сохранить</button>
-        <button  (click)="HideEditNull()">Отмена</button>
-      </div>
-    </form>
-      </div>
-  `
+  styleUrls: ['./popup.component.css'],
+  templateUrl: 'editor.component.html'
 })
 export class EditorComponent extends AppHelp implements OnInit, DoCheck {
   myform: FormGroup;
@@ -74,12 +40,13 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck {
   }
   submit(form) {
     const controls = this.myform.controls;
-    var flag = 0;
+    let flag = 0;
     for (let mykey in controls) {
       if (this.isControlInvalid(mykey)) {
         flag = 1;
         break;
       }
+      mykey = '1';
     }
     if (flag === 0) {
       AppHelp.EditStudent.name = this.myform.value.name;
@@ -161,10 +128,10 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck {
       }
     }
   }
-  HideEditCheck(): number {
+  public HideEditCheck(): number {
     return AppHelp.HideEdit;
   }
-  HideEditNull(): void {
+  public HideEditNull(): void {
     this.firstTime = 0;
     AppHelp.HideEdit = 0;
   }
