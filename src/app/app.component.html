@@ -65,7 +65,7 @@
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         {{student.patronymic}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
-        {{(student.datebd.getMonth()+1) + '/' + student.datebd.getDate() + '/' +  student.datebd.getFullYear()}}</td>
+        {{student.datebd| appDatePipe}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
         {{student.mark}}</td>
       <td *ngIf="checkConditionsFilters(student.mark, student.datebd)">
@@ -79,4 +79,13 @@
     </tbody>
   </table>
 </div>
+
+
+</div>
+<div> Общий список студентов </div>
+<div>Грязный пайп</div>
+<div>{{database|appStudentsArrDirtyPipe}}</div>
+<div>обычный пайп</div>
+<div *ngFor="let student of database" [style.background]="checkSearch(student.surname)|| checkMark(student.mark)">
+  {{student.name | appStudentnamesPipe:student.surname: student.patronymic }}
 </div>

@@ -9,6 +9,9 @@ import {AddStudentComponent} from './add-student.component';
 import {AppComponent} from './app.component';
 import {TouchMenuDirective} from './touchMenu.directive';
 import {MouseDirective} from './mouse.directive';
+import {DatePipe} from './date.pipe';
+import {StudentnamesPipe} from './studentnames.pipe';
+import {StudentsArrDirtyPipe} from './studentsArrDirty.pipe'
 @NgModule({
   imports: [
     BrowserModule,
@@ -17,7 +20,8 @@ import {MouseDirective} from './mouse.directive';
     ReactiveFormsModule,
     BrowserAnimationsModule,
   ],
-  declarations: [AppComponent, DeleteStudentComponent, AddStudentComponent, EditorComponent, TouchMenuDirective, MouseDirective],
+  declarations: [AppComponent, DeleteStudentComponent, AddStudentComponent, EditorComponent, TouchMenuDirective, MouseDirective,
+  DatePipe, StudentnamesPipe, StudentsArrDirtyPipe],
   bootstrap: [AppComponent, DeleteStudentComponent, AddStudentComponent, EditorComponent],
   providers: [],
 })

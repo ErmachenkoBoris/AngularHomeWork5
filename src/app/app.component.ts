@@ -2,6 +2,8 @@ import {Component, ChangeDetectionStrategy, ChangeDetectorRef, ApplicationRef, D
 import {AppHelp} from './app-help';
 import {Student} from './app-Student';
 import {TouchMenuDirective} from './touchMenu.directive';
+import {DatePipe} from './date.pipe';
+import {StudentsArrDirtyPipe} from './studentsArrDirty.pipe';
 
 @Component({
   selector: 'app-purchase',
@@ -20,6 +22,7 @@ export class AppComponent extends AppHelp implements DoCheck {
       {name: 'Анна', surname: 'Мезина', patronymic: 'Петровна', datebd: new Date('5/5/2005'), mark: 4},
       {name: 'Яна', surname: 'Богатова', patronymic: 'Семеновна', datebd: new Date('12/10/2000'), mark: 2}
     ];
+
   backcolor: string[] = ['white', 'white', 'white', 'white', 'white'];
   flag: boolean;
   surname: string;

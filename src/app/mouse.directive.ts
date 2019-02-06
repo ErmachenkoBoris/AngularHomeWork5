@@ -15,10 +15,6 @@ export class MouseDirective implements DoCheck, OnInit {
   }
 
   @HostListener('mousemove', ['$event']) onMouseMove(event: MouseEvent) {
-    // console.log(this.length);
-    // console.log(this.width);
-   //  console.log(event.clientY);
-    // console.log(event.clientY);
     this.setBackGround(event.clientX, event.clientY);
   }
 
@@ -41,15 +37,11 @@ export class MouseDirective implements DoCheck, OnInit {
     this.scaleY = this.length / 255;
     this.centerX = this.width / 2;
     this.centerY = this.length / 2;
-    console.log(this.scaleX );
-    console.log(this.scaleY );
   }
   ngOnInit(): void {
     this.scaleX = this.width / 255;
     this.scaleY = this.length / 255;
     this.centerX = this.width / 2;
     this.centerY = this.length / 2;
-    console.log(this.scaleX );
-    console.log(this.scaleY );
   }
 }

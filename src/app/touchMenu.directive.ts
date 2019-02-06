@@ -23,7 +23,6 @@ export class TouchMenuDirective implements DoCheck {
   }
   ngDoCheck(): void {
     if (this.changeColor !== 0) {
-      console.log(this.changeColor);
       this.render.setStyle(this.elementRef.nativeElement, 'background', 'black');
     } else {
       this.render.setStyle(this.elementRef.nativeElement, 'background', this.color);
