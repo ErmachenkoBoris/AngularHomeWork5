@@ -1,16 +1,14 @@
 import {Component, OnInit, DoCheck, ChangeDetectionStrategy, ApplicationRef, OnChanges, ChangeDetectorRef} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import {Student} from './app-Student';
-import {AppHelp} from './app-help';
+import {AppHelp} from '../app-help';
 @Component({
-  selector: 'app-edit',
+  selector: 'app-editor',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./popup.component.css'],
-  templateUrl: 'editor.component.html'
+  styleUrls: ['../popup.component.css'],
+  templateUrl: './editor.component.html'
 })
 export class EditorComponent extends AppHelp implements OnInit, DoCheck, OnChanges {
   myform: FormGroup;
-  Stud: Student;
   firstTime = 0;
   constructor(
     private formBuilder: FormBuilder,
@@ -19,7 +17,7 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck, OnChang
   ) {
     super();
   }
-  ngOnInit() {
+  ngOnInit(): void {
     this.initForm();
   }
   ngOnChanges(): void {
@@ -47,12 +45,11 @@ export class EditorComponent extends AppHelp implements OnInit, DoCheck, OnChang
   submit(form) {
     const controls = this.myform.controls;
     let flag = 0;
-    for (let mykey in controls) {
+    for (const mykey in controls) {
       if (this.isControlInvalid(mykey)) {
         flag = 1;
         break;
       }
-      mykey = '1';
     }
     if (flag === 0) {
       AppHelp.EditStudent.name = this.myform.value.name;

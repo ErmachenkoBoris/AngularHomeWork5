@@ -1,10 +1,10 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges, DoCheck} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DoCheck} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
-import {AppHelp} from './app-help';
+import {AppHelp} from '../app-help';
 @Component({
   selector: 'app-add',
-  styleUrls: ['./popup.component.css'],
-  templateUrl: 'add-student.component.html',
+  styleUrls: ['../popup.component.css'],
+  templateUrl: './add-student.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddStudentComponent implements OnInit, DoCheck {
@@ -22,7 +22,7 @@ export class AddStudentComponent implements OnInit, DoCheck {
   submit(form) {
     const controls = this.myform.controls;
     let flag = 0;
-    for (var key in controls) {
+    for (const key in controls) {
       if (this.isControlInvalid(key)) {
         flag = 1;
         break;
@@ -57,7 +57,7 @@ export class AddStudentComponent implements OnInit, DoCheck {
   cansel(): void {
     AppHelp.HideAdd = 0;
   }
-  HideAddCheck() {
+  HideAddCheck(): number {
     return AppHelp.HideAdd;
   }
   private nameValidator = (control: FormControl) => {

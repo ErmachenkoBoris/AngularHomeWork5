@@ -1,11 +1,11 @@
 import {Component, OnInit, DoCheck, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
-import {AppHelp} from './app-help';
-import {Student} from './app-Student';
+import {AppHelp} from '../app-help';
+import {Student} from '../app-Student';
 
 @Component({
   selector: 'app-dell',
-  styleUrls: ['./popup.component.css'],
-  templateUrl: 'delete-student.component.html',
+  styleUrls: ['../popup.component.css'],
+  templateUrl: './delete-student.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeleteStudentComponent extends  AppHelp implements OnInit, DoCheck {
@@ -15,9 +15,9 @@ export class DeleteStudentComponent extends  AppHelp implements OnInit, DoCheck 
     super();
     this.Stud = new Student('', '', '', '', 0)
   }
-  ngOnInit() {
+  ngOnInit(): void {
   }
-  ngDoCheck() {
+  ngDoCheck(): void {
     this.Stud = AppHelp.DelStudent;
     this.cdr.detectChanges();
   }

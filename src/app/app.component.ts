@@ -1,9 +1,6 @@
 import {Component, ChangeDetectionStrategy, ChangeDetectorRef, ApplicationRef, DoCheck} from '@angular/core';
 import {AppHelp} from './app-help';
 import {Student} from './app-Student';
-import {TouchMenuDirective} from './touchMenu.directive';
-import {DatePipe} from './date.pipe';
-import {StudentsArrDirtyPipe} from './studentsArrDirty.pipe';
 
 @Component({
   selector: 'app-purchase',
@@ -218,7 +215,7 @@ export class AppComponent extends AppHelp implements DoCheck {
     for (let i = 0; i < this.backcolor.length; i++) {
       this.backcolor[i] = 'white';
     }
-    this.backcolor[index] = '#98FB98';
+    this.backcolor[index] = '#9a9e95';
   }
   turnOn(value: number): void {
     this.on = value;

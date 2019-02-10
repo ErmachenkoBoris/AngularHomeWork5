@@ -5,6 +5,7 @@ import {Directive, ElementRef, Renderer2, HostListener, Input, DoCheck} from '@a
 })
 export class TouchMenuDirective implements DoCheck {
   @Input()public changeColor: number;
+  @Input()public chooseIndicat: string;
   public color = 'white';
   constructor(private elementRef: ElementRef, private render: Renderer2) {
   }
@@ -18,14 +19,18 @@ export class TouchMenuDirective implements DoCheck {
     this.setBackGround('white');
   }
 
-  private setBackGround(val: string) {
-    this.render.setStyle(this.elementRef.nativeElement, 'background', val);
+  private setBackGround(val: string): void {
+    if (this.chooseIndicat === 'white') {
+      this.render.setStyle(this.elementRef.nativeElement, 'background', val);
+    }
   }
   ngDoCheck(): void {
-    if (this.changeColor !== 0) {
-      this.render.setStyle(this.elementRef.nativeElement, 'background', 'black');
-    } else {
-      this.render.setStyle(this.elementRef.nativeElement, 'background', this.color);
+    if (this.chooseIndicat === 'white') {
+      if (this.changeColor !== 0) {
+        this.render.setStyle(this.elementRef.nativeElement, 'background', 'black');
+      } else {
+        this.render.setStyle(this.elementRef.nativeElement, 'background', this.color);
+      }
     }
   }
 }

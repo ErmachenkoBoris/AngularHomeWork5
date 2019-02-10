@@ -1,5 +1,4 @@
 import {Directive, ElementRef, Renderer2, HostListener, Input, DoCheck, OnInit} from '@angular/core';
-import {InitialInputData} from '@angular/core/src/render3/interfaces/node';
 
 @Directive({
   selector: '[appMouse]'
